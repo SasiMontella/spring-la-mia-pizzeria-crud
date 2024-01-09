@@ -24,7 +24,7 @@
         <tbody>
         <tr th:each="pizza : ${pizzalist}" th:object="${pizza}">
             <td th:text="*{name}"></td>
-            <td th:text="*{price}"></td>
+            <td th:text="*{price} + €"></td>
             <td>
                 <a class="btn btn-primary" th:href="@{/pizza/show/{id}(id = ${pizza.id})}">Details</a>
             </td>
