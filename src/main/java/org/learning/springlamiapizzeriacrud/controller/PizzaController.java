@@ -1,14 +1,14 @@
 package org.learning.springlamiapizzeriacrud.controller;
 
+import jakarta.validation.Valid;
 import org.learning.springlamiapizzeriacrud.model.Pizza;
 import org.learning.springlamiapizzeriacrud.repository.PizzaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
@@ -36,5 +36,19 @@ public class PizzaController {
         } else {
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with id " + id + " not found");
         }
+    }
+    @GetMapping("/create")
+    public String create(Model model){
+        Pizza pizza = new Pizza();
+        model.addAttribute("pizza", new Pizza());
+        return "pizzas/create";
+    }
+    @PostMapping("/create")
+    public String store(@Valid @ModelAttribute("pizza") Pizza formpizza, BindingResult bindingresult){
+        if (bindingresult.hasErrors()){
+        return "pizzas/create";
+    }
+        Pizza savedpizza = pizzarepository.save(formpizza);
+        return "redirect:/pizza/show/" + savedpizza.getId();
     }
 }
