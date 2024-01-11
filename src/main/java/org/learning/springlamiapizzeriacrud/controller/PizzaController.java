@@ -69,8 +69,9 @@ public class PizzaController {
             if (bindingresult.hasErrors()){
                 return "pizzas/edit";
             }
+            formpizza.setPhoto(pizzaToEdit.getPhoto());
             Pizza savedpizza = pizzarepository.save(formpizza);
-            return "redirect:/pizzas/show/" + id;
+            return "redirect:/pizza/show/{id}";
         } else {
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "Pizza with id " + id + " not found");
         }
