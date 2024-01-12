@@ -11,6 +11,12 @@
 <body>
 <!-- Attributi: pizzalist(List<Pizza>) -->
 <div class="container">
+    <div    th:if="${redirectMessage != null}"
+            class="alert alert-warning alert-dismissible fade show"
+            role="alert">
+        <div th:text="${redirectMessage}"></div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <h1>Pizza List</h1>
     <hr>
     <div class="alert alert-info" th:if="${pizzalist.size() == 0}"> There aren't pizza here.</div>
@@ -25,9 +31,16 @@
         <tr th:each="pizza : ${pizzalist}" th:object="${pizza}">
             <td th:text="*{name}"></td>
             <td th:text="*{price} + €"></td>
-            <td>
-                <a class="btn btn-primary" th:href="@{/pizza/show/{id}(id = ${pizza.id})}">Details</a>
-                <a class="btn btn-primary" th:href = "@{/pizza/edit/{id}(id = ${pizza.id})}">Edit</a>
+            <td class="d-flex justify-content-center">
+                <a class="btn btn-primary mx-1" th:href="@{/pizza/show/{id}(id = ${pizza.id})}">Details</a>
+                <a class="btn btn-primary mx-1" th:href = "@{/pizza/edit/{id}(id = ${pizza.id})}">Edit</a>
+                <form
+                        th:action="@{/pizza/delete/{id}(id = ${pizza.id})}"
+                        method="post"
+                        onsubmit="return confirm('Are you sure?')"
+                >
+                        <button type="submit" class="btn btn-danger text-white mx-1">Delete</button>
+                </form>
             </td>
         </tr>
         </tbody>
